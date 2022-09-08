@@ -10,7 +10,7 @@ class TodoForm extends Component {
     super();
     this.state = {
       task: '',
-      priority: '',
+      priority: 'low',
       deadline: '',
       isDisabled: true,
     };
