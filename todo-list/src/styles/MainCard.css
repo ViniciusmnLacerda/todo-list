@@ -7,6 +7,7 @@
   flex-direction: column;
   justify-content: space-between;
   border-radius: 20px;
+  max-width: 790px;
 }
 
 .top-content {
@@ -53,4 +54,13 @@
   background-color: #fff;
   border-radius: 0 0 20px 20px;
   padding: 20px;
+}
+
+@media screen and (max-width: 550px) {
+  .main-card {
+    width: 90%;
+  }
+  .bottom-content {
+    padding: 20px 0px;
+  }
 }

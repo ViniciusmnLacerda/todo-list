@@ -11,7 +11,7 @@
 }
 
 .todo-content {
-  width: 50%;
+  width: 80%;
   height: 80%;
 }
 
@@ -122,4 +122,14 @@
   background-color: #F23D4C;;
   color: #fff;
   cursor: pointer;
+}
+
+@media screen and (max-width: 550px) {
+  .todo-form  {
+    width: 90%;
+  }
+
+  .todo-content {
+    width: 95%;
+  }
 }

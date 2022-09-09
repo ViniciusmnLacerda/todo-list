@@ -14,7 +14,7 @@ class MainCard extends Component {
   };
 
   render() {
-    const { areYouAddingTask } = this.props;
+    const { areYouAddingTask, areYouEditingTask } = this.props;
     return (
       <div className="main-card">
         <div className="top-content">
@@ -35,7 +35,7 @@ class MainCard extends Component {
         <div className="bottom-content">
           <Tasks />
         </div>
-        {areYouAddingTask && <TodoForm />}
+        {areYouAddingTask ? (<TodoForm />) : (areYouEditingTask && <TodoForm />) }
       </div>
     );
   }
@@ -44,10 +44,12 @@ class MainCard extends Component {
 MainCard.propTypes = {
   dispatch: PropTypes.func.isRequired,
   areYouAddingTask: PropTypes.bool.isRequired,
+  areYouEditingTask: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   areYouAddingTask: state.todoList.areYouAddingTask,
+  areYouEditingTask: state.todoList.areYouEditingTask,
 });
 
 export default connect(mapStateToProps)(MainCard);

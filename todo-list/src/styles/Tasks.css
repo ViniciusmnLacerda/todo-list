@@ -17,6 +17,16 @@
 
 .even {
   background: #f2f2f2;
+  width: 100%;
+}
+
+.done::before {
+  content: "";
+  width: calc(60% - 60px);
+  max-width: 730px;
+  height: 2px;
+  background-color: black;
+  position: absolute;
 }
 
 .low {
@@ -29,4 +39,55 @@
 
 .high {
   border-left: 5px solid red;
+}
+
+.tasks-container div span {
+  font-size: 16px;
+}
+
+.task {
+  width: 200px;
+}
+
+.deadline {
+  width: 100px;
+}
+
+.buttons-container {
+  height: 16px;
+  display: flex;
+  gap: 5px;
+}
+
+.icons-btn-even, .icons-btn-odd {
+  height: 16px;
+}
+
+.icons-btn-even:hover, .icons-btn-odd:hover {
+  cursor: pointer;
+}
+
+.icons-btn-even svg {
+  width: 16px;
+  height: 16px;
+  background-color: #f2f2f2;
+}
+
+.icons-btn-odd svg {
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+}
+
+@media screen and (max-width: 550px) {
+  .tasks-container div span {
+    font-size: 13px;
+  }
+
+  .done::before {
+    width: calc(90% - 20px);
+  }
+  .buttons-container{
+    gap: 0;
+  }
 }

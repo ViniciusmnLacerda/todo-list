@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { connect } from 'react-redux';
-import { addTask, closeForm } from '../store/actions';
+import { addTask, closeForm, finishEdit } from '../store/actions';
 import '../styles/TodoForm.css';
 
 class TodoForm extends Component {
@@ -16,6 +16,18 @@ class TodoForm extends Component {
     };
   }
 
+  componentDidMount() {
+    const { areYouEditingTask, taskToBeEdited } = this.props;
+    if (areYouEditingTask) {
+      this.setState({
+        task: taskToBeEdited.task,
+        priority: taskToBeEdited.priority,
+        deadline: taskToBeEdited.deadline,
+        isDisabled: false,
+      });
+    }
+  }
+
   closeFormTask = () => {
     const { dispatch } = this.props;
     dispatch(closeForm());
@@ -26,13 +38,24 @@ class TodoForm extends Component {
   };
 
   saveTask = () => {
-    const { dispatch, tasks } = this.props;
+    const {
+      dispatch, tasks, taskToBeEdited, areYouEditingTask,
+    } = this.props;
     const { task, priority, deadline } = this.state;
-    const taskObj = {
-      task, priority, deadline, id: tasks.length,
-    };
-    dispatch(addTask(taskObj));
-    dispatch(closeForm());
+    if (areYouEditingTask) {
+      taskToBeEdited.task = task;
+      taskToBeEdited.priority = priority;
+      taskToBeEdited.deadline = deadline;
+      tasks[taskToBeEdited.id] = taskToBeEdited;
+      dispatch(finishEdit(tasks));
+      dispatch(closeForm());
+    } else {
+      const taskObj = {
+        task, priority, deadline, id: tasks.length, done: false,
+      };
+      dispatch(addTask(taskObj));
+      dispatch(closeForm());
+    }
   };
 
   validate = () => {
@@ -49,11 +72,12 @@ class TodoForm extends Component {
     const {
       task, priority, deadline, isDisabled,
     } = this.state;
+    const { areYouEditingTask } = this.props;
     return (
       <div className="todo-form">
         <div className="todo-content">
           <header>
-            <h1>Add task</h1>
+            <h1>{areYouEditingTask ? 'Edit task' : 'Add task'}</h1>
             <div
               className="close"
               onClick={this.closeFormTask}
@@ -118,11 +142,21 @@ class TodoForm extends Component {
 TodoForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  areYouEditingTask: PropTypes.bool.isRequired,
+  taskToBeEdited: PropTypes.shape({
+    task: PropTypes.string.isRequired,
+    priority: PropTypes.string.isRequired,
+    deadline: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    done: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   areYouAddingTask: state.todoList.areYouAddingTask,
+  areYouEditingTask: state.todoList.areYouEditingTask,
   tasks: state.todoList.tasks,
+  taskToBeEdited: state.todoList.taskToBeEdited,
 });
 
 export default connect(mapStateToProps)(TodoForm);
